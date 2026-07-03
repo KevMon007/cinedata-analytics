@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+h1 {
+    color: #1a1a2e;
+}
+
+nav a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #0f3460;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
