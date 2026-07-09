@@ -1,9 +1,8 @@
-from pathlib import Path
-
-from src.etl.extract import extract_tsv_gz
+from src.etl.extract import extract_tsv_gz, load_title_basics, load_title_ratings
 from src.etl.transform import clean_title_basics, clean_title_ratings, merge_movies_ratings
 from src.etl.validation import validate_movies_dataset, validate_schema
 from src.etl.load import load_csv
+from src.utils.paths import get_title_basics_path, get_title_ratings_path, get_final_dataset_path
 
 
 EXPECTED_COLUMNS = [
@@ -13,8 +12,18 @@ EXPECTED_COLUMNS = [
 ]
 
 
-def run_pipeline(basics_path, ratings_path, output_path):
-    """Ejecuta el pipeline ETL completo de IMDb."""
+def run_pipeline(basics_path=None, ratings_path=None, output_path=None):
+    """Ejecuta el pipeline ETL completo de IMDb.
+
+    Si no se proporcionan rutas, usa las definidas en .env o los valores por defecto.
+    """
+    if basics_path is None:
+        basics_path = get_title_basics_path()
+    if ratings_path is None:
+        ratings_path = get_title_ratings_path()
+    if output_path is None:
+        output_path = get_final_dataset_path()
+
     basics = extract_tsv_gz(basics_path)
     ratings = extract_tsv_gz(ratings_path)
 
@@ -26,9 +35,16 @@ def run_pipeline(basics_path, ratings_path, output_path):
     if schema_errors["missing"]:
         raise ValueError(f"Columnas faltantes: {schema_errors['missing']}")
 
-    validation_errors = validate_movies_dataset(df)
-    if validation_errors:
-        raise ValueError(f"Validación fallida: {validation_errors}")
+    validate_movies_dataset(df)
 
     load_csv(df, output_path)
     return df
+
+
+def run_pipeline_with_defaults():
+    """Ejecuta el pipeline usando rutas por defecto (desde .env o configuración interna)."""
+    return run_pipeline()
+
+
+if __name__ == "__main__":
+    run_pipeline_with_defaults()

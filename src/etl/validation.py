@@ -2,6 +2,10 @@ import pandas as pd
 import numpy as np
 
 
+class DataValidationError(ValueError):
+    """Error personalizado cuando los datos no cumplen las reglas de validación."""
+
+
 def check_missing_values(df):
     """Retorna columnas con valores faltantes y su conteo."""
     return df.isnull().sum()[df.isnull().sum() > 0]
@@ -20,22 +24,23 @@ def validate_schema(df, expected_cols):
 
 
 def validate_movies_dataset(df):
-    """Valida el dataset final de películas con las reglas de negocio."""
-    errors = []
+    """Valida el dataset final de películas con las reglas de negocio.
 
+    Retorna True si todo está correcto. Lanza DataValidationError si algo falla.
+    """
     if df["tconst"].isnull().any():
-        errors.append("tconst nulo encontrado")
+        raise DataValidationError("tconst nulo encontrado")
 
     if not np.issubdtype(df["startYear"].dtype, np.integer):
-        errors.append("startYear no es numérico")
+        raise DataValidationError("startYear no es numérico")
 
     if not np.issubdtype(df["runtimeMinutes"].dtype, np.integer):
-        errors.append("runtimeMinutes no es numérico")
+        raise DataValidationError("runtimeMinutes no es numérico")
 
     if (df["averageRating"] < 0).any() or (df["averageRating"] > 10).any():
-        errors.append("averageRating fuera del rango 0-10")
+        raise DataValidationError("averageRating fuera del rango 0-10")
 
     if (df["numVotes"] < 0).any():
-        errors.append("numVotes negativo")
+        raise DataValidationError("numVotes negativo")
 
-    return errors
+    return True

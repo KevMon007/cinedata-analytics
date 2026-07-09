@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 import numpy as np
-from src.etl.validation import check_duplicates, validate_schema, validate_movies_dataset
+from src.etl.validation import check_duplicates, validate_schema, validate_movies_dataset, DataValidationError
 
 
 def test_check_duplicates():
@@ -24,8 +24,7 @@ def test_validate_movies_dataset_passes():
         "averageRating": [7.5, 8.0],
         "numVotes": [100, 200]
     })
-    errors = validate_movies_dataset(df)
-    assert errors == []
+    assert validate_movies_dataset(df) is True
 
 
 def test_validate_movies_dataset_null_tconst():
@@ -36,8 +35,8 @@ def test_validate_movies_dataset_null_tconst():
         "averageRating": [7.5, 8.0],
         "numVotes": [100, 200]
     })
-    errors = validate_movies_dataset(df)
-    assert "tconst nulo encontrado" in errors
+    with pytest.raises(DataValidationError, match="tconst nulo encontrado"):
+        validate_movies_dataset(df)
 
 
 def test_validate_movies_dataset_rating_out_of_range():
@@ -48,8 +47,8 @@ def test_validate_movies_dataset_rating_out_of_range():
         "averageRating": [7.5, 11.0],
         "numVotes": [100, 200]
     })
-    errors = validate_movies_dataset(df)
-    assert "averageRating fuera del rango 0-10" in errors
+    with pytest.raises(DataValidationError, match="averageRating fuera del rango 0-10"):
+        validate_movies_dataset(df)
 
 
 def test_validate_movies_dataset_negative_votes():
@@ -60,5 +59,5 @@ def test_validate_movies_dataset_negative_votes():
         "averageRating": [7.5, 8.0],
         "numVotes": [100, -5]
     })
-    errors = validate_movies_dataset(df)
-    assert "numVotes negativo" in errors
+    with pytest.raises(DataValidationError, match="numVotes negativo"):
+        validate_movies_dataset(df)
