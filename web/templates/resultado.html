@@ -3,12 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultado</title>
+    <title>CineData Analytics | Resultado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>Resultado</h1>
-    <pre>{{ data }}</pre>
-    <a href="/">Volver al inicio</a>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="/">
+                <span class="brand-mark">CD</span>
+                <span>CineData Analytics</span>
+            </a>
+            <nav class="nav-links" aria-label="Navegacion principal">
+                <a href="/">Recomendador</a>
+                <a href="/dashboard">Analisis</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="result-hero panel">
+                <div>
+                    <span class="section-kicker">Paso 2</span>
+                    <h1>Tu cluster y peliculas similares</h1>
+                    <p class="muted">
+                        El sistema K-Means ubico tu pelicula de referencia en un grupo de peliculas con
+                        caracteristicas similares. Estas son las que compartan tu cluster.
+                    </p>
+                </div>
+                <div class="preference-summary">
+                    <span>Pelicula de referencia</span>
+                    <strong>{{ preferences.get('favorite_movie', 'Interstellar') }}</strong>
+                    <small>Cluster {{ cluster_info.id }}: {{ cluster_info.name }}</small>
+                    <small>Genero principal: {{ cluster_info.genre }}</small>
+                </div>
+            </section>
+
+            <section class="cluster-description panel">
+                <div>
+                    <span class="section-kicker">Aprendizaje no supervisado</span>
+                    <h2>Que es este cluster?</h2>
+                </div>
+                <p>
+                    El algoritmo K-Means agrupo esta pelicula con otras que comparten patrones similares en:
+                    duracion promedio de {{ cluster_info.avg_runtime }} min, calificacion promedio de {{ cluster_info.avg_rating }}/10,
+                    y un rango de años cercano al periodo {{ cluster_info.year_range }}. Estas peliculas
+                    comparten {{ cluster_info.movie_count }} peliculas en total dentro del mismo grupo.
+                </p>
+            </section>
+
+            <section class="recommendation-stack">
+                {% for movie in recommendations %}
+                <article class="explain-card">
+                    <div class="rank-badge">0{{ loop.index }}</div>
+                    <div class="explain-main">
+                        <div class="movie-meta">
+                            <span>{{ movie.genre }}</span>
+                            <span>{{ movie.year }}</span>
+                            <span>Rating {{ movie.rating }}</span>
+                            <span>{{ movie.votes }} votos</span>
+                        </div>
+                        <h2>{{ movie.title }}</h2>
+                        <p>{{ movie.description }}</p>
+                        <ul class="reason-list">
+                            {% for reason in movie.reasons %}
+                            <li>{{ reason }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="affinity-box">
+                        <strong>{{ movie.similarity }}%</strong>
+                        <span>Similitud</span>
+                        <div class="signal-meter compact">
+                            <span style="width: {{ movie.similarity }}%"></span>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </section>
+
+            <section class="panel method-panel">
+                <div>
+                    <span class="section-kicker">Metodologia</span>
+                    <h2>Como funciona el clustering</h2>
+                </div>
+                <p>
+                    K-Means es un algoritmo de aprendizaje no supervisado que agrupa datos sin necesidad
+                    de etiquetas previas. Cada pelicula se representa como un vector numerico con sus
+                    caracteristicas (año, duracion, rating, votos). El algoritmo encuentra los centroides
+                    que minimizan la distancia intra-cluster, formando grupos naturales de peliculas similares.
+                    La similitud se calcula inversamente a la distancia euclidiana al centroide del cluster.
+                </p>
+                <div class="hero-actions">
+                    <a class="button primary" href="/">Probar otra pelicula</a>
+                    <a class="button secondary" href="/dashboard">Ver analisis de clusters</a>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

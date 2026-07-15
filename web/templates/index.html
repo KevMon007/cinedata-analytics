@@ -3,14 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineData Analytics</title>
+    <title>CineData Analytics | Recomendador</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>CineData Analytics</h1>
-    <p>Bienvenido al panel de análisis de datos cinematográficos.</p>
-    <nav>
-        <a href="/dashboard">Dashboard</a>
-    </nav>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="Inicio CineData">
+                <span class="brand-mark">CD</span>
+                <span>CineData Analytics</span>
+            </a>
+            <nav class="nav-links" aria-label="Navegacion principal">
+                <a href="/" class="active">Recomendador</a>
+                <a href="/dashboard">Analisis</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero-single">
+                <div class="hero-copy">
+                    <span class="eyebrow">Recomendacion por clustering</span>
+                    <h1>Peliculas agrupadas por similitud. Encuentra las que van contigo.</h1>
+                    <p>
+                        El sistema usa aprendizaje no supervisado (K-Means) para agrupar peliculas
+                        segun sus caracteristicas reales: genero, duracion, calificacion y popularidad.
+                        Selecciona una pelicula de referencia y descubre las mas similares dentro de su cluster.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button primary" href="#recomendador">Buscar por similitud</a>
+                        <a class="button secondary" href="/dashboard">Ver analisis de clusters</a>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="panel split-panel" id="recomendador">
+                <div>
+                    <span class="section-kicker">Paso 1</span>
+                    <h2>Busqueda por similitud</h2>
+                    <p class="muted">Ingresa una pelicula de referencia y el sistema la ubicara en su cluster para mostrarte las mas similares.</p>
+                </div>
+
+                <form class="recommendation-form" action="/resultado" method="post">
+                    <label>
+                        Pelicula de referencia
+                        <input type="text" name="favorite_movie" value="Interstellar" placeholder="Ej. Interstellar, Inception, Titanic">
+                    </label>
+
+                    <label>
+                        Genero preferido
+                        <select name="genre">
+                            <option value="">Todos</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Action">Accion</option>
+                            <option value="Comedy">Comedia</option>
+                            <option value="Sci-Fi">Ciencia ficcion</option>
+                            <option value="Horror">Terror</option>
+                            <option value="Thriller">Thriller</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Animation">Animacion</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Rango de años
+                        <div style="display: flex; gap: 8px;">
+                            <input type="number" name="min_year" value="2000" min="1900" max="2026" placeholder="Desde">
+                            <input type="number" name="max_year" value="2024" min="1900" max="2026" placeholder="Hasta">
+                        </div>
+                    </label>
+
+                    <label>
+                        Rating minimo
+                        <input type="number" name="min_rating" value="6.0" min="0" max="10" step="0.5">
+                    </label>
+
+                    <label>
+                        Votos minimos
+                        <input type="number" name="min_votes" value="10000" min="0" step="1000">
+                    </label>
+
+                    <label>
+                        Duracion maxima (min)
+                        <input type="number" name="max_runtime" value="180" min="1" max="500">
+                    </label>
+
+                    <button class="button primary full" type="submit">Buscar en mi cluster</button>
+                </form>
+            </section>
+
+            <section class="section-header">
+                <div>
+                    <span class="section-kicker">Vista previa</span>
+                    <h2>Peliculas del mismo cluster</h2>
+                </div>
+                <p class="muted">Ejemplo de como se presentaran las peliculas agrupadas por similitud en el mismo cluster.</p>
+            </section>
+
+            <section class="movie-grid">
+                {% for movie in recommendations %}
+                <article class="movie-card">
+                    <div class="poster-placeholder">{{ movie.title[:2] }}</div>
+                    <div class="movie-card-body">
+                        <div class="movie-meta">
+                            <span>{{ movie.genre }}</span>
+                            <span>{{ movie.year }}</span>
+                            <span>Cluster {{ movie.cluster }}</span>
+                        </div>
+                        <h3>{{ movie.title }}</h3>
+                        <p>{{ movie.description }}</p>
+                        <div class="score-row">
+                            <strong>{{ movie.similarity }}%</strong>
+                            <span>Similitud al cluster</span>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </section>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

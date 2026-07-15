@@ -3,13 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard — CineData</title>
+    <title>CineData Analytics | Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>Dashboard</h1>
-    <p>Visualizaciones y métricas del análisis.</p>
-    <a href="/">Volver al inicio</a>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="/">
+                <span class="brand-mark">CD</span>
+                <span>CineData Analytics</span>
+            </a>
+            <nav class="nav-links" aria-label="Navegacion principal">
+                <a href="/">Recomendador</a>
+                <a href="/dashboard" class="active">Analisis</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="section-header dashboard-title">
+                <div>
+                    <span class="section-kicker">Paso 3</span>
+                    <h1>Analisis de clusters y datos</h1>
+                </div>
+                <p class="muted">
+                    Vista del respaldo analitico: como K-Means agrupa las peliculas y metricas generales del dataset.
+                </p>
+            </section>
+
+            <section class="metric-grid">
+                {% for metric in metrics %}
+                <article class="metric-card">
+                    <span>{{ metric.label }}</span>
+                    <strong>{{ metric.value }}</strong>
+                    <small>{{ metric.detail }}</small>
+                </article>
+                {% endfor %}
+            </section>
+
+            <section class="analytics-grid">
+                <article class="panel chart-card">
+                    <div class="chart-heading">
+                        <div>
+                            <span class="section-kicker">Clustering</span>
+                            <h2>Distribucion por cluster</h2>
+                        </div>
+                        <span class="chip">K-Means</span>
+                    </div>
+                    <div class="bar-list">
+                        {% for cluster in clusters %}
+                        <div class="bar-row">
+                            <span>{{ cluster.label }}</span>
+                            <div class="bar-track"><span style="width: {{ cluster.value }}%"></span></div>
+                            <strong>{{ cluster.count }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </article>
+
+                <article class="panel chart-card">
+                    <div class="chart-heading">
+                        <div>
+                            <span class="section-kicker">Tendencia</span>
+                            <h2>Rating promedio por periodo</h2>
+                        </div>
+                        <span class="chip">Preparado para CSV</span>
+                    </div>
+                    <div class="trend-chart" aria-label="Grafica de tendencia de ratings">
+                        {% for trend in trends %}
+                        <div class="trend-column">
+                            <span style="height: {{ trend.value }}%"></span>
+                            <small>{{ trend.label }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </article>
+            </section>
+
+            <section class="panel pipeline-panel">
+                <div>
+                    <span class="section-kicker">Arquitectura</span>
+                    <h2>Flujo del proyecto</h2>
+                </div>
+                <div class="pipeline">
+                    <span>Extraccion</span>
+                    <span>Limpieza</span>
+                    <span>EDA</span>
+                    <span>K-Means</span>
+                    <span>Recomendacion</span>
+                </div>
+                <p class="muted">
+                    El frontend muestra la capa de presentacion. El motor de recomendacion se basa en
+                    aprendizaje no supervisado (K-Means) que agrupa peliculas por similitud de atributos.
+                </p>
+            </section>
+        </main>
+    </div>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
