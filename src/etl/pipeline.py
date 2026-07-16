@@ -1,4 +1,4 @@
-from src.etl.extract import extract_tsv_gz, load_title_basics, load_title_ratings
+from src.etl.extract import TITLE_BASICS_COLUMNS, TITLE_RATINGS_COLUMNS, extract_tsv_gz
 from src.etl.transform import clean_title_basics, clean_title_ratings, merge_movies_ratings
 from src.etl.validation import validate_movies_dataset, validate_schema
 from src.etl.load import load_csv
@@ -24,8 +24,8 @@ def run_pipeline(basics_path=None, ratings_path=None, output_path=None):
     if output_path is None:
         output_path = get_final_dataset_path()
 
-    basics = extract_tsv_gz(basics_path)
-    ratings = extract_tsv_gz(ratings_path)
+    basics = extract_tsv_gz(basics_path, expected_columns=TITLE_BASICS_COLUMNS)
+    ratings = extract_tsv_gz(ratings_path, expected_columns=TITLE_RATINGS_COLUMNS)
 
     basics = clean_title_basics(basics)
     ratings = clean_title_ratings(ratings)

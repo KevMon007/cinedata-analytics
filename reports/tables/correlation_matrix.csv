@@ -1,0 +1,5 @@
+feature,startYear,runtimeMinutes,averageRating,numVotes
+startYear,1.0,0.1,0.059,0.026
+runtimeMinutes,0.1,1.0,0.053,0.095
+averageRating,0.059,0.053,1.0,0.067
+numVotes,0.026,0.095,0.067,1.0
