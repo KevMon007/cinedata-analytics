@@ -16,6 +16,10 @@ data/processed/*
 data/final/*
 !data/final/.gitkeep
 
+# Model artifacts
+models/*.joblib
+models/*.pkl
+
 # Environment
 .env
 *.env

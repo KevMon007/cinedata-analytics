@@ -1,0 +1,26 @@
+cluster,tconst,primaryTitle,startYear,genres,averageRating,numVotes,distanceToCentroid
+0,tt32117939,Chhava,2024,"Biography,Documentary,Drama",8.4,2277,2.598
+0,tt13577982,Secrets of Sinauli,2021,"Documentary,History",8.9,2254,2.6405
+0,tt0805188,Marilena from P7,2006,"Drama,Fantasy",7.8,2122,2.4835
+0,tt16899584,The Beatles: Get Back - The Rooftop Concert,2022,"Documentary,Music",8.9,2014,2.4782
+0,tt0290296,Space Station 3D,2002,Documentary,7.4,1809,2.4268
+1,tt0111161,The Shawshank Redemption,1994,Drama,9.3,3201987,4.228
+1,tt0468569,The Dark Knight,2008,"Crime,Thriller",9.1,3182754,4.2979
+1,tt1375666,Inception,2010,"Adventure,Sci-Fi,Thriller",8.8,2829291,4.0857
+1,tt0137523,Fight Club,1999,"Crime,Drama,Thriller",8.8,2623111,3.9151
+1,tt0816692,Interstellar,2014,"Adventure,Drama,Sci-Fi",8.7,2550065,4.465
+2,tt12361974,Zack Snyder's Justice League,2021,"Adventure,Fantasy,Sci-Fi",7.9,475155,5.8484
+2,tt0087843,Once Upon a Time in America,1984,"Crime,Drama",8.3,409160,5.5024
+2,tt0047478,Seven Samurai,1954,"Action,Drama",8.6,402857,5.321
+2,tt0031381,Gone with the Wind,1939,"Drama,Romance,War",8.2,356405,6.1272
+2,tt0056172,Lawrence of Arabia,1962,"Adventure,Biography,Drama",8.3,342481,5.5586
+3,tt0010323,The Cabinet of Dr. Caligari,1920,"Horror,Mystery,Thriller",8.0,76422,4.0214
+3,tt0015324,Sherlock Jr.,1924,"Action,Comedy,Romance",8.1,66161,4.1927
+3,tt0018773,The Circus,1928,"Comedy,Family,Romance",8.1,38667,3.6432
+3,tt0023245,The Mummy,1932,"Fantasy,Horror",6.9,33442,3.2339
+3,tt0019760,Man with a Movie Camera,1929,Documentary,8.3,30477,3.6315
+4,tt1213644,Disaster Movie,2008,"Comedy,Sci-Fi",1.9,98097,3.7855
+4,tt1702443,Justin Bieber: Never Say Never,2011,"Documentary,Music",1.7,76054,3.8021
+4,tt5988370,Reis,2017,"Biography,Drama",1.0,74715,4.1319
+4,tt35291758,Melania,2026,Documentary,1.6,69061,3.853
+4,tt1754700,The Prototype,2022,"Action,Sci-Fi,Thriller",2.3,47352,3.3752

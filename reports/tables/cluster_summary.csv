@@ -1,0 +1,6 @@
+cluster,cantidad,rating_promedio,duracion_promedio,anio_promedio,votos_mediana,log_votos_promedio,distancia_promedio,genero_principal
+0,92551,7.18,82.35,2011.92,28.0,1.53,1.07,Documentary
+1,51880,6.44,103.93,2005.53,2505.0,3.54,1.28,Drama
+2,28449,6.63,143.05,2001.91,79.0,1.99,1.59,Drama
+3,67148,5.96,84.59,1957.35,55.0,1.85,1.26,Drama
+4,71960,4.51,90.76,2009.17,126.0,2.06,1.17,Comedy

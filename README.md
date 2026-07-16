@@ -27,8 +27,10 @@ pip install -r requirements.txt
 3. Revisar el dataset final en `data/final/movies_dataset.csv`
 4. Ejecutar el EDA: `python -m src.analysis.run_eda`
 5. Revisar tablas, figuras y reporte en `reports/`
-6. Ejecutar notebooks en orden dentro de `notebooks/`
-7. Para levantar la web: `python web/app.py`
+6. Ejecutar clustering: `python -m src.models.run_clustering`
+7. Revisar `reports/clustering_report.md` y `data/final/movies_clustered.csv`
+8. Ejecutar notebooks en orden dentro de `notebooks/`
+9. Para levantar la web: `python web/app.py`
 
 ## Pipeline ETL
 
@@ -40,3 +42,15 @@ Documentación por etapa:
 - `reports/transform_design.md`
 - `reports/load_design.md`
 - `reports/eda_report.md`
+- `reports/clustering_design.md`
+- `reports/clustering_report.md`
+
+## Clustering
+
+La fase de aprendizaje no supervisado evalua automaticamente `k=2..10` con `silhouette_score` y entrena K-Means con el mejor valor encontrado.
+
+Para fijar un valor manual de `k`:
+
+```bash
+python -m src.models.run_clustering --k 5
+```
