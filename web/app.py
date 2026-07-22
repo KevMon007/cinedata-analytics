@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 
+from web import data as web_data
+
 app = Flask(__name__)
 
 
@@ -109,16 +111,38 @@ RATING_TRENDS = [
 
 @app.route("/")
 def index():
-    return render_template("index.html", recommendations=CLUSTER_MOVIES)
+    try:
+        cluster_top_df = web_data.load_cluster_top_movies()
+        recommendations = web_data.get_preview_recommendations_from_cluster_top(cluster_top_df)
+    except web_data.WebDataError:
+        recommendations = CLUSTER_MOVIES
+
+    return render_template("index.html", recommendations=recommendations)
 
 
 @app.route("/dashboard")
 def dashboard():
+    data_error = None
+
+    try:
+        movies_df = web_data.load_clustered_movies()
+        cluster_summary_df = web_data.load_cluster_summary()
+        evaluation_df = web_data.load_kmeans_evaluation()
+        context = web_data.build_dashboard_context(movies_df, cluster_summary_df, evaluation_df)
+    except web_data.WebDataError as exc:
+        data_error = str(exc)
+        context = {
+            "metrics": DASHBOARD_METRICS,
+            "clusters": CLUSTER_DISTRIBUTION,
+            "trends": RATING_TRENDS,
+        }
+
     return render_template(
         "dashboard.html",
-        metrics=DASHBOARD_METRICS,
-        clusters=CLUSTER_DISTRIBUTION,
-        trends=RATING_TRENDS,
+        metrics=context["metrics"],
+        clusters=context["clusters"],
+        trends=context["trends"],
+        data_error=data_error,
     )
 
 

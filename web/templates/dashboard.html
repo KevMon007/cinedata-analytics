@@ -33,6 +33,13 @@
                 </p>
             </section>
 
+            {% if data_error %}
+            <section class="panel notice-panel">
+                <span class="section-kicker">Datos pendientes</span>
+                <p>{{ data_error }}</p>
+            </section>
+            {% endif %}
+
             <section class="metric-grid">
                 {% for metric in metrics %}
                 <article class="metric-card">
